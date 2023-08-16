@@ -10,9 +10,13 @@ iptables 是集成在 Linux 内核中的包过滤防火墙系统。使用 iptabl
 “五链”是指内核中控制网络的 NetFilter 定义的 5 个规则链。每个规则表中包含多个数据链：INPUT（入站数据过滤）、OUTPUT（出站数据过滤）、FORWARD（转发数据过滤）、PREROUTING（路由前过滤）和POSTROUTING（路由后过滤），防火墙规则需要写入到这些具体的数据链中。
 ## 过滤框架
 下图是linux防火墙的过滤框架：
+<br>
 ![d000c01ab35f6bf7a14f8dd0f987527f.png](../_resources/d000c01ab35f6bf7a14f8dd0f987527f.png)
+<br>
 如果是外部主机发送数据包给防火墙本机，数据将会经过 PREROUTING 链与 INPUT 链；如果是防火墙本机发送数据包到外部主机，数据将会经过 OUTPUT 链与 POSTROUTING 链；如果防火墙作为路由负责转发数据，则数据将经过 PREROUTING 链、FORWARD 链以及 POSTROUTING 链。数据路径如下图所示：
+<br>
 ![c82e4fc00a41c40690a1345372c046d2.png](../_resources/c82e4fc00a41c40690a1345372c046d2.png)
+<br>
 # 语法格式
 iptable命令的语法格式如下：
 ```
@@ -81,7 +85,9 @@ iptables -nvL
 -n 表示不对 IP 地址进行反查，加上这个参数显示速度将会加快。
 -v 表示输出详细信息，包含通过该规则的数据包数量、总字节数以及相应的网络接口。
 ```
+<br>
 ![72086aa64627cf6857d0bc99546e2cce.png](../_resources/72086aa64627cf6857d0bc99546e2cce.png)
+<br>
 2、添加规则
 ```
 iptables -A INPUT -s 192.168.1.5 -j DROP
@@ -90,7 +96,9 @@ iptables -A INPUT -s 192.168.1.5 -j DROP
 -j DROP：-j 表示 "jump"，用于指定要执行的动作。在这里，DROP 表示丢弃（阻止）与上述条件匹配的数据包。
 这个命令的含义是：将一个规则添加到 INPUT 链，如果数据包的源地址是 192.168.1.5，则将其丢弃.
 ```
+<br>
 ![ed5ce80554e3daebce669b8580ac6871.png](../_resources/ed5ce80554e3daebce669b8580ac6871.png)
+<br>
 3、修改规则
 ```
 -R INPUT 1：-R 表示 "replace"，用于替换指定链中的规则。INPUT 是链的名称，表示要替换 INPUT 链中的规则。1 是规则的序号，表示要替换第 1 条规则。
@@ -98,7 +106,9 @@ iptables -A INPUT -s 192.168.1.5 -j DROP
 -j ACCEPT：-j 表示 "jump"，用于指定要执行的动作。在这里，ACCEPT 表示接受（允许）与上述条件匹配的数据包。
 这个命令的含义是：将名为 INPUT 的防火墙链中第 1 条规则替换为一个新的规则，如果数据包的源地址是 194.168.1.5，则接受这个数据包。
 ```
+<br>
 ![2ba98429c765cce52b72ba9c86a0bab9.png](../_resources/2ba98429c765cce52b72ba9c86a0bab9.png)
+<br>
 4、删除规则
 ```
 iptables -D INPUT 1 -s 194.168.1.5 -j ACCEPT
@@ -106,7 +116,9 @@ iptables -D INPUT 1 -s 194.168.1.5 -j ACCEPT
 iptables -D INPUT 1
 这个命令的含义是：删除INPUT链的第1条规则
 ```
+<br>
 ![2e78455a44357fa99835a65ed1ad146e.png](../_resources/2e78455a44357fa99835a65ed1ad146e.png)
+<br>
 # 防火墙备份与还原
 默认的 iptables 防火墙规则会立刻生效，但如果不保存，当计算机重启后所有的规则都会丢失，所以对防火墙规则进行及时保存的操作是非常必要的。
 ## 备份
@@ -128,7 +140,9 @@ iptables-save
 “：链名默认策略”表示相应的链及默认策略，具体的规则部分省略了命令名“iptables”；
 在末尾处“COMMIT”表示提交前面的规则设置。
 ```
+<br>
 ![828b80130b473fc77f1770a6140b0c5c.png](../_resources/828b80130b473fc77f1770a6140b0c5c.png)
+<br>
 列出某个表的规则内容：
 ```
 iptables-save -t nat
